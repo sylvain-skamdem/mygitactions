@@ -1,0 +1,72 @@
+# Set the actions' name
+name: Yaml Output Passing
+
+# Event trigger
+on:
+  push:
+    branches:
+      - "hotfix/**"
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+    
+
+jobs:
+  generate-info:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      current-date: ${{ steps.generate.outputs.current_date }}
+      commit_sha: ${{ steps.generate.outputs.commit_sha }}
+    
+    steps:
+      - name: Print Starting message
+        run: echo "Generating repository information"
+      - name: Capture date and commit SHA
+        id: generate
+        run: |
+          # Get the current date and time (UTC timezone)
+          CURRENT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+
+          # Get the short version of the commit SHA (first 7 characters)
+          # GITHUB_SHA is a built-in variable GitHub provides automatically
+          COMMIT_SHA="${GITHUB_SHA::7}"
+
+          # Save both values as outputs using GITHUB_OUTPUT
+          # This is the modern/correct way to pass data out of a step
+          echo "current_date=${CURRENT_DATE}" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=${COMMIT_SHA}" >> "$GITHUB_OUTPUT"
+
+          # Also print them so they appear in the run log (helpful for debugging)
+          echo "Date captured: ${CURRENT_DATE}"
+          echo "Commit SHA:    ${COMMIT_SHA}"
+
+  consume-info:
+    runs-on: ubuntu-latest
+    needs: generate-info
+    outputs:
+      current_date: ${{ needs.generate-info.outputs.current_date }}
+      commit_sha: ${{ needs.generate-info.outputs.commit_sha }}
+
+    steps:
+      - name: Display info from job 1
+        run:  |
+          echo "============================================"
+          echo "        Repository Information Report"
+          echo "============================================"
+          echo "  Date and Time : ${{ needs.generate-info.outputs.current_date }}"
+          echo "  Commit SHA    : ${{ needs.generate-info.outputs.commit_sha }}"
+          echo "============================================"
+          echo "  Data was successfully passed from Job 1!"
+          echo "============================================"
+
+  final-report:
+    runs-on: ubuntu-latest
+    needs: consume-info
+
+    steps:
+      - name: Print final summary
+        run: |
+          echo "Workflow completed successfully on ${{ needs.consume-info.outputs.current_date }} using commit ${{ needs.consume-info.outputs.commit_sha }}"
+        
