@@ -1,5 +1,6 @@
 # Set the actions' name
----name: Yaml Output Passing
+---
+name: Yaml Output Passing
 
 # Event trigger
 on:
