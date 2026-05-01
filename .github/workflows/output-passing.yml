@@ -1,5 +1,5 @@
 # Set the actions' name
-name: Yaml Output Passing
+---name: Yaml Output Passing
 
 # Event trigger
 on:
@@ -38,7 +38,7 @@ jobs:
           echo "current_date=${CURRENT_DATE}" >> "$GITHUB_OUTPUT"
           echo "commit_sha=${COMMIT_SHA}" >> "$GITHUB_OUTPUT"
 
-          # Also print them so they appear in the run log (helpful for debugging)
+          # Also print them so they appear in the run log
           echo "Date captured: ${CURRENT_DATE}"
           echo "Commit SHA:    ${COMMIT_SHA}"
 
@@ -51,12 +51,12 @@ jobs:
 
     steps:
       - name: Display info from job 1
-        run:  |
+        run: |
           echo "============================================"
           echo "        Repository Information Report"
           echo "============================================"
-          echo "  Date and Time : ${{ needs.generate-info.outputs.current_date }}"
-          echo "  Commit SHA    : ${{ needs.generate-info.outputs.commit_sha }}"
+          echo "  Date & Time: ${{ needs.generate-info.outputs.current_date }}"
+          echo "  Commit SHA : ${{ needs.generate-info.outputs.commit_sha }}"
           echo "============================================"
           echo "  Data was successfully passed from Job 1!"
           echo "============================================"
@@ -68,5 +68,8 @@ jobs:
     steps:
       - name: Print final summary
         run: |
-          echo "Workflow completed successfully on ${{ needs.consume-info.outputs.current_date }} using commit ${{ needs.consume-info.outputs.commit_sha }}"
+          echo "Workflow completed successfully on"
+          echo "${{ needs.consume-info.outputs.current_date }}"
+          echo "using commit"
+          echo "${{ needs.consume-info.outputs.commit_sha }}"
         
