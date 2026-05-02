@@ -1,1 +1,17 @@
+name: Job outputs and dependencies
 
+on:
+  push:
+    branches:
+      - "hotfix/**"
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  generate-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purpose
+        run: echo "Generating repo info..."
