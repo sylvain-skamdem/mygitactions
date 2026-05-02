@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     
     outputs:
-      current-date: ${{ steps.generate.outputs.current_date }}
+      current_date: ${{ steps.generate.outputs.current_date }}
       commit_sha: ${{ steps.generate.outputs.commit_sha }}
     
     steps:
@@ -70,8 +70,7 @@ jobs:
     steps:
       - name: Print final summary
         run: |
-          echo "Workflow completed successfully on"
-          echo "${{ needs.consume-info.outputs.current_date }}"
+          echo "Workflow completed successfully on ${{ needs.consume-info.outputs.current_date }}"
           echo "using commit"
           echo "${{ needs.consume-info.outputs.commit_sha }}"
         
