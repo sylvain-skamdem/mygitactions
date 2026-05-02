@@ -15,3 +15,9 @@ jobs:
     steps:
       - name: Purpose
         run: echo "Generating repo info..."
+      - name: Set outputs for date and commit SHA
+        id: generate
+        run: |
+            printenv
+            # CURRENT_DATE=$(date +%c)
+            # LATEST_COMMIT_ID=$( git re-parse --short=6 HEAD)
