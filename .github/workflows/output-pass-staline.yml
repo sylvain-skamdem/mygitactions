@@ -32,7 +32,13 @@ jobs:
             printenv
 
   consume-info:
+    needs: generate-info
     runs-on: ubuntu-latest
     steps:
       - name: Testing
-        run: echo "Jobs running"
+        run: |
+            echo "======================================="
+            echo "Received outpu of current date which is: ${{ needs.generate-info.outputs.current_date }}"
+            echo "======================================="
+            echo "Also received output of latest commit SHA which is: ${{ needs.generate-info.outputs.commit_sha }}"
+            echo "======================================="
