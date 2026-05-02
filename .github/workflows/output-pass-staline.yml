@@ -35,10 +35,17 @@ jobs:
     needs: generate-info
     runs-on: ubuntu-latest
     steps:
-      - name: Testing
+      - name: Print received Output
         run: |
             echo "======================================="
-            echo "Received outpu of current date which is: ${{ needs.generate-info.outputs.current_date }}"
-            echo "======================================="
+            echo "Received output of current date which is: ${{ needs.generate-info.outputs.current_date }}"
+            echo "+++++++++++++++++++++++++++++++++++++++"
             echo "Also received output of latest commit SHA which is: ${{ needs.generate-info.outputs.commit_sha }}"
             echo "======================================="
+
+  final-report:
+    needs: consume-info
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display final report
+        run: echo "Workflow completed successfully on ${{ needs.consume-info.outputs.current_date }} using commit ${{ needs.consume-info.outputs.commit_sha }}"
