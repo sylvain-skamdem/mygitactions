@@ -30,3 +30,9 @@ jobs:
             echo "current_date=$CURRENT_DATE" >> $GITHUB_OUTPUT
             echo "commit_sha=$LATEST_COMMIT_SHA" >> $GITHUB_OUTPUT
             printenv
+
+  consume-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Testing
+        run: echo "Jobs running"
